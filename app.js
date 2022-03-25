@@ -1,22 +1,27 @@
-const LINES = [];
+////////////
+// CANVAS //
+////////////
 
+const scale = window.devicePixelRatio; // Change to 1 on retina screens to see blurry canvas.
+const canvasWrapElm = document.getElementById('canvas');
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d', { alpha: false });
+ctx.scale(scale, scale); // Normalize coordinate system to use css pixels.
+canvasWrapElm.appendChild(canvas);
+
+canvas.width = 400;
+canvas.height = 400;
+
+////////////
+// EDITOR //
+////////////
+
+const EDITOR = document.getElementById('editor');
+const LINES = [];
 const FONTS = [
   'Helvetica',
   'Times New Roman',
 ];
-
-
-/*
-<div class='message-line'>
-  <p autofocus class='text-field' contenteditable='true'>Hello world</p>
-  <div class='line-options'>
-    <select class='option'>
-      <option>Times New Roman</option>
-    </select>
-    <input class='option' type='number' value='2'>
-  </div>
-</div>
-*/
 
 function create(tag, attr = {}, children = []) {
   children = Array.isArray(children) ? children : [children];
@@ -37,8 +42,6 @@ function create(tag, attr = {}, children = []) {
   });
   return elm;
 };
-
-const editor = document.getElementById('editor');
 
 const addLine = (props, insertAt = 0) => {
   const line = {};
@@ -75,7 +78,7 @@ const addLine = (props, insertAt = 0) => {
         evt.preventDefault();
 
         const idx = LINES.indexOf(line);
-        const nextLine = LINES[Math.max(idx - 1, 0)];
+        const nextLine = LINES[idx > 0 ? idx - 1 : 1];
         const [_, after] = getTextBeforeAndAfter(evt.target);
         
         if (after) {
@@ -126,7 +129,7 @@ const addLine = (props, insertAt = 0) => {
   ]);
 
   LINES.splice(insertAt + 1, 0, line);
-  editor.insertBefore(line.wrap, editor.children[insertAt + 1]);
+  EDITOR.insertBefore(line.wrap, EDITOR.children[insertAt + 1]);
   placeCaret(line.preview, true);
 }
 
