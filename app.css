@@ -1,0 +1,52 @@
+main {
+  display: flex;
+  min-height: 100vh;
+  align-items: stretch;
+}
+
+.panel {
+  flex-grow: 1;
+  flex-basis: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel:first-child {
+  background: #eee;
+  box-shadow: -10px -1px 60px -40px rgba(0,0,0,0.39) inset;
+}
+
+.text-field {
+  font-size: 24px;
+  background: #fff;
+  padding: 12px;
+  border-radius: 5px;
+  outline: 1px solid #666;
+}
+
+.text-field:focus {
+  outline: 2px solid magenta;
+}
+
+.message-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.line-options {
+  margin: 10px;
+  display: flex;
+  width: 300px;
+  align-items: stretch;
+}
+
+select.option {
+  flex-grow: 1;
+}
+
+input[type='number'].option {
+  width: 60px;
+}
