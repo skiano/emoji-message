@@ -9,8 +9,59 @@ const ctx = canvas.getContext('2d', { alpha: false });
 ctx.scale(scale, scale); // Normalize coordinate system to use css pixels.
 canvasWrapElm.appendChild(canvas);
 
-canvas.width = 400;
-canvas.height = 400;
+canvas.style.width = '400px';
+canvas.style.height = '400px';
+canvas.width = 400 * scale;
+canvas.height = 400 * scale;
+
+
+ctx.fillStyle = "yellow";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+function rule(y, color = 'black', width = 1) {
+  ctx.beginPath();
+  ctx.moveTo(0, y);
+  ctx.lineTo(canvas.width, y);
+  ctx.lineWidth = width;
+  ctx.strokeStyle = color;
+  ctx.stroke();
+}
+
+function bar(x, color = 'black', width = 1) {
+  ctx.beginPath();
+  ctx.moveTo(x, 0);
+  ctx.lineTo(x, canvas.height);
+  ctx.lineWidth = width;
+  ctx.strokeStyle = color;
+  ctx.stroke();
+}
+
+function writeLine(txt, x, y) {
+  ctx.fillStyle = "black";
+  ctx.textBaseline = "alphabetic"; // middle
+  ctx.font = '160px Courier New';
+  ctx.fillStyle = "black";
+  ctx.textAlign = 'center';
+
+  var metrics = ctx.measureText(txt); // TextMetrics object
+
+  rule(y, 'red');
+  bar(x, 'red');
+
+  rule(y - metrics.actualBoundingBoxAscent);
+  rule(y + metrics.actualBoundingBoxDescent);
+
+  rule(y + metrics.fontBoundingBoxDescent, 'red');
+  rule(y - metrics.fontBoundingBoxAscent, 'red');
+
+  bar(x - metrics.actualBoundingBoxLeft);
+  bar(x + metrics.actualBoundingBoxRight);
+
+  ctx.fillText(txt, x, y);
+}
+
+writeLine('Gregory', canvas.width / 2, canvas.height / 2);
 
 ////////////
 // EDITOR //
